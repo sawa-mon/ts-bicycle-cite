@@ -1,0 +1,9 @@
+body {
+  min-height: 100vh;
+  background: linear-gradient(46deg, #e06218 0%, #354fdc 100%);
+  color: white;
+}
+
+.head-main {
+  padding-top: 55px;
+}
