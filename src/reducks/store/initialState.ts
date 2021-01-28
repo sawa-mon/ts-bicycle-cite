@@ -4,11 +4,10 @@ const initialState = {
   },
 
   users: {
-    isSignedIn: true,
-    comment: [],
-    email: "test@example.com",
-    icon: "../../assets/Images/profilenone.png",
-    username: "testUser",
+    isSignedIn: false,
+    email: "",
+    icon: "",
+    username: "",
   },
 };
 

@@ -1,14 +1,17 @@
-import * as Actions from "./actions";
+import { ActionTypes, AreaPointActions } from "./actions";
 import initialState from "../store/initialState";
 
-export const AreaPointsReducer = (state = initialState.areapoints, action) => {
+export const AreaPointsReducer = (
+  state = initialState.areapoints,
+  action: AreaPointActions
+) => {
   switch (action.type) {
-    case Actions.DELETE_AREAPOINT:
+    case ActionTypes.DELETE_AREAPOINT:
       return {
         ...state,
         list: [...action.payload],
       };
-    case Actions.FETCH_AREAPOINTS:
+    case ActionTypes.FETCH_AREAPOINTS:
       return {
         ...state,
         list: [...action.payload],

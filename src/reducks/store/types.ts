@@ -1,3 +1,4 @@
+import { ImageType } from "./../../components/UIkit/types";
 import { AreapointsDataType } from "./../areapoints/types";
 import { RouterState } from "connected-react-router";
 
@@ -9,7 +10,8 @@ export type StoreState = {
     isSignedIn: boolean;
     comment: string;
     email: string;
-    icon: string;
+    icon: ImageType;
+    username: string;
   };
   router: RouterState;
 };

@@ -1,5 +1,10 @@
-export const SIGN_IN = "SIGN_IN";
-export const signInAction = (userdata) => {
+import { userDataType } from "./types";
+export const userActionTypes = {
+  SIGN_IN: "SIGN_IN",
+  SIGN_OUT: "SIGN_OUT",
+} as const;
+
+export const signInAction = (userdata: userDataType) => {
   return {
     type: "SIGN_IN",
     payload: {
@@ -11,7 +16,8 @@ export const signInAction = (userdata) => {
   };
 };
 
-export const SIGN_OUT = "SIGN_OUT";
+type SignInAction = ReturnType<typeof signInAction>;
+
 export const signOutAction = () => {
   return {
     type: "SIGN_OUT",
@@ -23,3 +29,5 @@ export const signOutAction = () => {
     },
   };
 };
+
+export type UserAction = SignInAction;
