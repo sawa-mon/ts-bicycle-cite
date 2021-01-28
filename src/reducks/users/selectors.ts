@@ -1,6 +1,7 @@
+import { DefaultRootState } from "react-redux";
 import { createSelector } from "reselect";
 
-const usersSelector = (state) => state.users;
+const usersSelector = (state: DefaultRootState) => state.users;
 
 export const getIsSignedIn = createSelector(
   [usersSelector],

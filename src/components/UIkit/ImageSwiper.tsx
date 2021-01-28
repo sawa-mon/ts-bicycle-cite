@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import Swiper, { ReactIdSwiperProps } from "react-id-swiper";
-import NoImage from "../../assets/Images/no_image.png";
+import NoImage from "../../assets/Images/noImage.png";
 // import "swiper/css/swiper.css";
 import styled from "styled-components";
-import { imageTypes } from "../UIkit/types";
+import { ImageTypes } from "../UIkit/types";
 
 type Props = {
-  images: imageTypes;
+  images?: ImageTypes;
 };
 
 export const ImageSwiper: React.FC<Props> = (props) => {
@@ -41,7 +41,7 @@ export const ImageSwiper: React.FC<Props> = (props) => {
       ) : (
         <StyledContainer>
           <StyledWrap>
-            <img src={NoImage} alt="no image" />
+            <img src={NoImage} alt="noimage" />
           </StyledWrap>
         </StyledContainer>
       )}

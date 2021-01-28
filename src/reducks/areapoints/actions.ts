@@ -1,22 +1,26 @@
+import { AreapointsDataType } from "./types";
+
 export const ActionTypes = {
   DELETE_AREAPOINT: "DELETE_AREAPOINT",
   FETCH_AREAPOINTS: "FETCH_AREAPOINTS",
 } as const;
 
-export const deleteAreaPointsAction = (areapoints: []) => {
+export const deleteAreaPointsAction = (areapoints: any) => {
   return {
-    type: typeof "DELETE_AREAPOINT",
+    type: "DELETE_AREAPOINT",
     payload: areapoints,
   };
 };
 
-export type DeleteAreaPointsAction = ReturnType<typeof deleteAreaPointsAction>;
+type DeleteAreaPointsAction = ReturnType<typeof deleteAreaPointsAction>;
 
-export const fetchAreaPointsAction = (areapoints: []) => {
+export const fetchAreaPointsAction = (areapoints: AreapointsDataType[]) => {
   return {
-    type: typeof "FETCH_AREAPOINTS",
+    type: "FETCH_AREAPOINTS",
     payload: areapoints,
   };
 };
 
-export type FetchAreaPointsAction = ReturnType<typeof fetchAreaPointsAction>;
+type FetchAreaPointsAction = ReturnType<typeof fetchAreaPointsAction>;
+
+export type AreaPointActions = FetchAreaPointsAction | DeleteAreaPointsAction;

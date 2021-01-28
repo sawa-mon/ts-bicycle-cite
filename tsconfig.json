@@ -24,6 +24,7 @@
     "jsx": "react"
   },
   "include": [
-    "src/@types",
+    "src",
+    "src/@types/svg.d.ts"
   ]
 }

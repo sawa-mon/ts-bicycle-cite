@@ -1,12 +1,19 @@
+import { StoreState } from "./../store/types";
 import { push } from "connected-react-router";
+import { Dispatch } from "redux";
 import { db, FirebaseTimestamp } from "../../firebase";
-import { deleteAreaPointsAction, fetchAreaPointsAction } from "./actions";
+import {
+  deleteAreaPointsAction,
+  fetchAreaPointsAction,
+  AreaPointActions,
+} from "./actions";
+import { AreapointsDataType } from "./types";
 
 const areapointsRef = db.collection("areapoints");
 
 //エリア情報取得
 export const fetchAreaPoints = (category: string, prefecture: string) => {
-  return async (dispatch) => {
+  return async (dispatch: Dispatch<AreaPointActions>) => {
     let query = areapointsRef.orderBy("timestamp", "desc");
     // orderByに加えてprefectureが空白ではなかったらwhere条件文でフィールドがprefectureのものを取得する
     query =
@@ -14,9 +21,9 @@ export const fetchAreaPoints = (category: string, prefecture: string) => {
     query = category !== "" ? query.where("category", "==", category) : query;
 
     query.get().then((snapshots) => {
-      const areapointList = [];
+      const areapointList: AreapointsDataType[] = [];
       snapshots.forEach((snapshot) => {
-        const areapoint = snapshot.data();
+        const areapoint = snapshot.data() as AreapointsDataType;
         areapointList.push(areapoint);
       });
       dispatch(fetchAreaPointsAction(areapointList));
@@ -25,8 +32,11 @@ export const fetchAreaPoints = (category: string, prefecture: string) => {
 };
 
 //dbエリア情報の削除処理
-export const deleteAreaPoint = (id) => {
-  return async (dispatch, getState) => {
+export const deleteAreaPoint = (id: string) => {
+  return async (
+    dispatch: Dispatch<AreaPointActions>,
+    getState: () => StoreState
+  ) => {
     areapointsRef
       .doc(id)
       .delete()
@@ -41,7 +51,7 @@ export const deleteAreaPoint = (id) => {
 };
 
 //ラック設置ポイントの登録処理
-export const saveAddPoint = (
+export const saveAddPoint = ({
   id,
   info,
   images,
@@ -49,21 +59,26 @@ export const saveAddPoint = (
   locationLat,
   locationLng,
   prefecture,
-  category
-) => {
-  return async (dispatch, getState) => {
+  category,
+}: AreapointsDataType) => {
+  return async (dispatch: Dispatch, getState: () => StoreState) => {
     const timestamp = FirebaseTimestamp.now();
+    const userInfo = getState().users;
+    const userName = userInfo.username;
+    const icon = userInfo.icon;
 
     const data = {
       id: id,
       info: info,
       images: images,
       installation: installation,
-      locationLat: parseFloat(locationLat),
-      locationLng: parseFloat(locationLng),
+      locationLat: parseFloat(String(locationLat)),
+      locationLng: parseFloat(String(locationLng)),
       prefecture: prefecture,
       timestamp: timestamp,
       category: category,
+      username: userName,
+      icon: icon,
     };
 
     //新規作成のページのときのみ(idが""=新規作成)は実行
@@ -74,15 +89,12 @@ export const saveAddPoint = (
       data.timestamp = timestamp;
     }
 
-    const userInfo = getState().users;
-    const username = userInfo.username;
-    const icon = userInfo.icon;
-    data.username = username;
+    data.username = userName;
     data.icon = icon;
 
     return areapointsRef
       .doc(id)
-      .set(data, { marge: true }) //dataのみだとデータを上書きしてしまう為
+      .set(data, { merge: true }) //dataのみだとデータを上書きしてしまう為
       .then(() => {
         dispatch(push("/"));
       })
