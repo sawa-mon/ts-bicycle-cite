@@ -2,12 +2,12 @@ import React from "react";
 import Router from "./Router";
 import "./assets/sanitize.css";
 import "./assets/style.css";
-// import { Header } from "./components/Header";
+import { Header } from "./components/Header";
 
-const App = () => {
+const App: React.FC = () => {
   return (
     <React.Fragment>
-      {/* <Header /> */}
+      <Header />
       <main className="head-main">
         <Router />
       </main>

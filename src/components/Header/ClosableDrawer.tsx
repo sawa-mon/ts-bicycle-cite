@@ -7,7 +7,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import { makeStyles } from "@material-ui/styles";
-import AddCirclreIcon from "@material-ui/icons/AddCircle";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { push } from "connected-react-router";
@@ -15,8 +15,10 @@ import { signOut } from "../../reducks/users/operations";
 import { db } from "../../firebase/index";
 import ExploreIcon from "@material-ui/icons/Explore";
 import ImportContactsIcon from "@material-ui/icons/ImportContacts";
+import { Theme } from "@material-ui/core";
+import { listFuncType } from "../../components/Header/types";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   drawer: {
     [theme.breakpoints.up("sm")]: {
       flexShrink: 0,
@@ -34,12 +36,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const ClosableDrawer = (props) => {
+type PropsType = {
+  open: boolean;
+  onClose: (event: {}) => void;
+};
+
+export const ClosableDrawer: React.FC<PropsType> = (props) => {
   const dispatch = useDispatch();
   const classes = useStyles();
-  const { container } = props;
 
-  const selectMenu = (event, path) => {
+  const selectMenu = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    path: string
+  ) => {
     if (/^https:*/.test(path) || /^http:*/.test(path)) {
       let a = document.createElement("a");
       a.href = path;
@@ -106,7 +115,7 @@ export const ClosableDrawer = (props) => {
     {
       func: selectMenu,
       label: "Mapポイント情報追加",
-      icon: <AddCirclreIcon />,
+      icon: <AddCircleIcon />,
       id: "add",
       value: "/installationinfoedit",
     },
@@ -146,7 +155,7 @@ export const ClosableDrawer = (props) => {
       .orderBy("number", "asc")
       .get()
       .then((snapshots) => {
-        const list = [];
+        const list: listFuncType[] = [];
         snapshots.forEach((snapshot) => {
           const prefecture = snapshot.data();
           list.push({
@@ -156,14 +165,13 @@ export const ClosableDrawer = (props) => {
             value: `/?prefecture=${prefecture.id}`,
           });
         });
-        setFilters((prevState) => [...prevState, ...list]);
+        setFilters((prevState: listFuncType[]) => [...prevState, ...list]);
       });
   }, []);
 
   return (
     <nav className={classes.drawer}>
       <Drawer
-        container={container}
         variant="temporary" //開閉
         anchor="right" //開閉開始位置
         open={props.open}
@@ -171,57 +179,47 @@ export const ClosableDrawer = (props) => {
         classes={{ paper: classes.drawerPaper }}
         ModalProps={{ keepMounted: true }}
       >
-        <div
-          onClose={(e) => props.onClose(e)}
-          onKeyDown={(e) => props.onClose(e)}
-        >
-          <List>
+        <List>
+          <ListItem
+            button
+            key="logout"
+            onClick={() => {
+              dispatch(signOut());
+            }}
+          >
+            <ListItemIcon>
+              <ExitToAppIcon />
+            </ListItemIcon>
+            <ListItemText primary={"ログアウト"} />
+          </ListItem>
+          {menus.map((menu) => (
             <ListItem
               button
-              key="logout"
-              onClose={(e) => props.onClose(e)}
+              key={menu.id}
               onClick={(e) => {
-                dispatch(signOut());
-                selectMenu(e);
+                menu.func(e, menu.value);
               }}
             >
-              <ListItemIcon>
-                <ExitToAppIcon />
-              </ListItemIcon>
-              <ListItemText primary={"ログアウト"} />
+              <ListItemIcon>{menu.icon}</ListItemIcon>
+              <ListItemText primary={menu.label} />
             </ListItem>
-            {menus.map((menu) => (
-              <ListItem
-                button
-                key={menu.id}
-                onClick={(e) => {
-                  menu.func(e, menu.value);
-                  selectMenu(e);
-                }}
-              >
-                <ListItemIcon>{menu.icon}</ListItemIcon>
-                <ListItemText primary={menu.label} />
-              </ListItem>
-            ))}
-          </List>
-          <Divider />
-          <List>
-            {filters.map((filter) => (
-              <ListItem
-                button
-                key={filter.id}
-                onClick={
-                  filter.value &&
-                  ((e) => {
-                    filter.func(e, filter.value);
-                  })
-                }
-              >
-                <ListItemText primary={filter.label} />
-              </ListItem>
-            ))}
-          </List>
-        </div>
+          ))}
+        </List>
+        <Divider />
+        <List>
+          {filters.map((filter: listFuncType) => (
+            <ListItem
+              button
+              key={filter.id}
+              onClick={(e) => {
+                filter.func(e, filter.value);
+                props.onClose(e);
+              }}
+            >
+              <ListItemText primary={filter.label} />
+            </ListItem>
+          ))}
+        </List>
       </Drawer>
     </nav>
   );

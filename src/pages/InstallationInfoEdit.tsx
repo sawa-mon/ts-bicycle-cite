@@ -1,28 +1,30 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Button, GoogleMapsComponent, SelectBox } from "../components/UIkit";
+import { Button, SelectBox } from "../components/UIkit";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
 import { saveAddPoint } from "../reducks/areapoints/operations";
 import { AddImage } from "../components/UIkit";
 import { db } from "../firebase";
+import { ImageTypes } from "../components/UIkit/types";
+import { useDispatch } from "react-redux";
+import { listType } from "./types";
+import { AreapointsDataType } from "../reducks/areapoints/types";
 
-export const InstallationInfoEdit: React.FC = () => {
-  const dispatch = useDispatch();
+export const InstallationInfoEdit: React.FC<AreapointsDataType> = () => {
   let id = window.location.pathname.split("/installationinfoedit")[1];
-
+  const dispatch = useDispatch();
   if (id !== "") {
     id = id.split("/")[1];
   }
 
   const [info, setInfo] = useState("");
   const [installation, setInstallation] = useState("");
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState<ImageTypes>([]);
   const [locationLat, setLocationLat] = useState("");
   const [locationLng, setLocationLng] = useState("");
   const [prefecture, setPrefecture] = useState("");
-  const [prefectures, setPrefectures] = useState([]);
+  const [prefectures, setPrefectures] = useState<listType[]>([]);
   const [category, setCategory] = useState("");
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<listType[]>([]);
 
   const inputInfo = useCallback(
     (event) => {
@@ -39,23 +41,30 @@ export const InstallationInfoEdit: React.FC = () => {
   );
 
   // /編集ページにおけるデータベースからのデータ取得
-  useEffect(async () => {
-    if (id !== "") {
-      await db
-        .collection("areapoints")
-        .doc(id)
-        .get()
-        .then((snapshot) => {
-          const data = snapshot.data();
-          setInfo(data.info);
-          setInstallation(data.installation);
-          setImages(data.images);
-          setLocationLat(data.locationLat);
-          setLocationLng(data.locationLng);
-          setPrefecture(data.prefecture);
-          setCategory(data.category);
-        });
-    }
+  useEffect(() => {
+    const locationData = async (): Promise<void> => {
+      if (id !== "") {
+        await db
+          .collection("areapoints")
+          .doc(id)
+          .get()
+          .then((snapshot) => {
+            const data = snapshot.data();
+            if (data === undefined) {
+              return null;
+            }
+            setInfo(data.info);
+            setInstallation(data.installation);
+            setImages(data.images);
+            setLocationLat(data.locationLat);
+            setLocationLng(data.locationLng);
+            setPrefecture(data.prefecture);
+            setCategory(data.category);
+          });
+      }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      locationData();
+    };
   }, [id]);
 
   useEffect(() => {
@@ -63,7 +72,7 @@ export const InstallationInfoEdit: React.FC = () => {
       .orderBy("id", "asc")
       .get()
       .then((snapshots) => {
-        const list = [];
+        const list: listType[] = [];
         snapshots.forEach((snapshot) => {
           const data = snapshot.data();
           list.push({
@@ -80,7 +89,7 @@ export const InstallationInfoEdit: React.FC = () => {
       .orderBy("number", "asc")
       .get()
       .then((snapshots) => {
-        const categorylist = [];
+        const categorylist: listType[] = [];
         snapshots.forEach((snapshot) => {
           const categorydata = snapshot.data();
           categorylist.push({
@@ -119,22 +128,22 @@ export const InstallationInfoEdit: React.FC = () => {
         <Wrap>
           <h3>追加するMapのポイントデータ</h3>
           <p>
-            経度:{Math.floor(locationLat * 1000000) / 1000000}
+            経度:{(Number(locationLat) * 1000000) / 1000000}
             <br />
-            緯度:{Math.floor(locationLng * 1000000) / 1000000}
+            緯度:{(Number(locationLng) * 1000000) / 1000000}
           </p>
           <h4>Mapで指定したい位置を選択して下さい</h4>
         </Wrap>
-        <Wrap>
+        {/* <Wrap>
           <GoogleMapsComponent
-            zoom={10}
+            zoom={Number(10)}
             lat={!locationLat ? 35.338657 : locationLat}
             lng={!locationLat ? 137.115682 : locationLng}
             mapContainerStyle={mapContainerStyle}
             locationLat={setLocationLat}
             locationLng={setLocationLng}
           />
-        </Wrap>
+        </Wrap> */}
         <h3>カテゴリ選択</h3>
         <Wrap>
           <SelectBox
@@ -158,10 +167,11 @@ export const InstallationInfoEdit: React.FC = () => {
           prefecture &&
           category ? (
             <Button
+              plane={false}
               label="この内容で登録する"
               onClick={() =>
                 dispatch(
-                  saveAddPoint(
+                  saveAddPoint({
                     id,
                     info,
                     images,
@@ -170,12 +180,16 @@ export const InstallationInfoEdit: React.FC = () => {
                     locationLng,
                     prefecture,
                     category
-                  )
+                  })
                 )
               }
             />
           ) : (
-            <Button plane label="未入力項目入力があります" />
+            <Button
+              plane={true}
+              label="未入力項目入力があります"
+              onClick={() => null}
+            />
           )}
         </Wrap>
       </StyledDiv>

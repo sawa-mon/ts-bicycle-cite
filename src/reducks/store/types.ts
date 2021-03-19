@@ -7,7 +7,7 @@ export type StoreState = {
     list: AreapointsDataType[];
   };
   users: {
-    isSignedIn: boolean;
+    isSignedIn: false;
     comment: string;
     email: string;
     icon: ImageType;

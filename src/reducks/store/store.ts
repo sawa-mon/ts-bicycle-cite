@@ -8,7 +8,7 @@ import { connectRouter, routerMiddleware } from "connected-react-router";
 import thunk from "redux-thunk";
 import * as History from "history";
 
-// import { UsersReducer } from "../users/reducers";
+import { UsersReducer } from "../users/reducers";
 import { AreaPointsReducer } from "../areapoints/reducers";
 
 const composeEnhancers =
@@ -19,7 +19,7 @@ export default function createStore(history: History.History) {
     combineReducers({
       router: connectRouter(history),
       areapoints: AreaPointsReducer,
-      // users: UsersReducer,
+      users: UsersReducer,
     }),
     //DevTools用
     composeEnhancers(applyMiddleware(routerMiddleware(history), thunk))

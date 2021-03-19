@@ -1,17 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import {
-  getUserEmail,
   getUserIcon,
   getUserName,
 } from "../reducks/users/selectors";
 
-export const UserInfo = () => {
+export const UserInfo:React.FC = () => {
   const selector = useSelector((state) => state);
   const userName = getUserName(selector);
-  const userIcon = getUserIcon(selector);
-  const userEmail = getUserEmail(selector);
+  const userIcon:any = getUserIcon(selector);
 
   return (
     <Section>

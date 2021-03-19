@@ -1,26 +1,26 @@
 import React, { useCallback, useRef } from "react";
-import { GoogleMap, useLoadScript } from "@react-google-maps/api";
+import { GoogleMap, GoogleMapProps } from "@react-google-maps/api";
 import { PlaceInfo } from "./PlaceInfo";
 
-interface PropsType {
-  mapContainerStyle: { height: string; width: string };
-  zoom: number;
-  lat: number;
-  lng: number;
-  info: string;
-  locationLat: (e: number) => void;
-  locationLng: (e: number) => void;
-  onClick: (e: any) => void;
-}
+// interface MapPropsType {
+//   mapContainerStyle: { height: string; width: string };
+//   zoom: number;
+//   lat: number;
+//   lng: number;
+//   info: string;
+//   locationLat: (e: number) => void;
+//   locationLng: (e: number) => void;
+//   onClick: ((e:React.MouseEvent<HTMLElement, MouseEvent>) => void);
+// }
 
-const libraries = ["places"];
+// const libraries = ["places"];
 // デフォルトUI（衛星写真オプション）キャンセル
 const options = {
   disableDefaultUI: true,
   zoomControl: true,
 };
 
-export const GoogleMapsComponent: React.FC<PropsType> = (props) => {
+export const GoogleMapsComponent:React.FC<GoogleMapProps> = (props) => {
   const id = window.location.pathname.split(/&|\//)[1];
   // const { isLoaded, loadError } = useLoadScript({
   //   googleMapsApiKey: process.env.REACT_APP_MAP_API_KEY,
@@ -51,7 +51,6 @@ export const GoogleMapsComponent: React.FC<PropsType> = (props) => {
         }}
         options={options}
         onLoad={onMapLoad}
-        // eslint-disable-next-line eqeqeq
         onClick={
           id !== "areapoint" &&
           ((e) => {

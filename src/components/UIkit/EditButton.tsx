@@ -1,19 +1,21 @@
 import React, { useState } from "react";
 import { push } from "connected-react-router";
-import menuIcon from "../../assets/Images/menuIcon.svg";
-import styled from "styled-components";
 import { useDispatch } from "react-redux";
-import { deleteAreaPoint } from "../../reducks/areapoints/operation";
+import { deleteAreaPoint } from "../../reducks/areapoints/operations";
 import IconButton from "@material-ui/core/IconButton";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import MenuIcon from "@material-ui/icons/Menu";
 
-export const EditButton = (props) => {
-  const dispatch = useDispatch();
-  const [anchorEl, setAnchorEl] = useState(null);
+type Props = {
+  id: string;
+}
 
-  const handleClick = (event) => {
+export const EditButton:React.FC<Props> = (props) => {
+  const dispatch = useDispatch();
+  const [anchorEl, setAnchorEl] = useState<null | (EventTarget & HTMLButtonElement)>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -52,20 +54,3 @@ export const EditButton = (props) => {
     </div>
   );
 };
-
-const StyledMenuIcon = styled.button`
-  width: 30px;
-  height: 30px;
-  border-radius: 15px;
-  border: none;
-  outline: none;
-  background: white;
-  opacity: 0.7;
-  cursor: pointer;
-  img {
-    cursor: pointer;
-  }
-  :hover {
-    opacity: 0.5;
-  }
-`;

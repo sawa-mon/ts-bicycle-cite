@@ -7,7 +7,7 @@ import {
   fetchAreaPointsAction,
   AreaPointActions,
 } from "./actions";
-import { AreapointsDataType } from "./types";
+import { AreapointsDataTypes, AreapointsDataType } from "./types";
 
 const areapointsRef = db.collection("areapoints");
 
@@ -21,7 +21,7 @@ export const fetchAreaPoints = (category: string, prefecture: string) => {
     query = category !== "" ? query.where("category", "==", category) : query;
 
     query.get().then((snapshots) => {
-      const areapointList: AreapointsDataType[] = [];
+      const areapointList: AreapointsDataTypes = [];
       snapshots.forEach((snapshot) => {
         const areapoint = snapshot.data() as AreapointsDataType;
         areapointList.push(areapoint);
@@ -32,7 +32,7 @@ export const fetchAreaPoints = (category: string, prefecture: string) => {
 };
 
 //dbエリア情報の削除処理
-export const deleteAreaPoint = (id: string) => {
+export const deleteAreaPoint = (id : string) => {
   return async (
     dispatch: Dispatch<AreaPointActions>,
     getState: () => StoreState
@@ -72,8 +72,8 @@ export const saveAddPoint = ({
       info: info,
       images: images,
       installation: installation,
-      locationLat: parseFloat(String(locationLat)),
-      locationLng: parseFloat(String(locationLng)),
+      locationLat: parseFloat(locationLat),
+      locationLng: parseFloat(locationLng),
       prefecture: prefecture,
       timestamp: timestamp,
       category: category,

@@ -8,8 +8,9 @@ import noImageAvatar from "../assets/Images/noImageAvatar.svg";
 import submitIcon from "../assets/Images/submitIcon.svg";
 import { getUserIcon, getUserName } from "../reducks/users/selectors";
 import { getAreaPoints } from "../reducks/areapoints/selector";
+import { Theme } from "@material-ui/core";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme:Theme) => ({
   sliderBox: {
     [theme.breakpoints.down("sm")]: {
       margin: "5px auto 10px auto",
@@ -43,8 +44,6 @@ export const AreaPointDetail = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
   const selector = useSelector((state) => state);
-  // const areaPointName = getAreaPoints(selector);
-  // console.log(areaPointName);
 
   const path = selector.router.location.pathname;
   const userName = getUserName(selector);

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-type Props = {
+interface Props {
   label: string;
   plane: boolean;
   onClick: () => void;
@@ -19,7 +19,7 @@ export const Button: React.FC<Props> = (props) => {
   );
 };
 
-const StyledButton = styled.button<{plane: boolean}>`
+const StyledButton = styled.button<{ plane: boolean }>`
   background: ${(props) => (props.plane ? "#d8d8d8a8" : "#47c9f3b5")};
 
   display: grid;
