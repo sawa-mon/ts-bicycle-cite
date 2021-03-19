@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import GoogleIcon from "../assets/Images/google.svg";
 import { Loading } from "../components/UIkit/Loading";
 
-const SignIn = () => {
+export const SignIn = () => {
   const dispatch = useDispatch();
   const [nonDisplay, setNonDisplay] = useState(false);
 
@@ -78,8 +78,6 @@ const SignIn = () => {
     </Section>
   );
 };
-
-export default SignIn;
 
 const Section = styled.div`
   min-width: 300px;

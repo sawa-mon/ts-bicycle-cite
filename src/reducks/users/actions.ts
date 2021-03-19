@@ -1,17 +1,17 @@
-import { userDataType } from "./types";
-export const userActionTypes = {
+import { UserDataType } from "./types";
+export const UserActionTypes = {
   SIGN_IN: "SIGN_IN",
   SIGN_OUT: "SIGN_OUT",
 } as const;
 
-export const signInAction = (userdata: userDataType) => {
+export const signInAction = (userData: UserDataType) => {
   return {
-    type: "SIGN_IN",
+    type: UserActionTypes.SIGN_IN,
     payload: {
       isSignedIn: true,
-      email: userdata.email,
-      icon: userdata.icon,
-      username: userdata.username,
+      email: userData.email,
+      icon: userData.icon,
+      username: userData.username,
     },
   };
 };
@@ -20,7 +20,7 @@ type SignInAction = ReturnType<typeof signInAction>;
 
 export const signOutAction = () => {
   return {
-    type: "SIGN_OUT",
+    type: UserActionTypes.SIGN_OUT,
     payload: {
       isSignedIn: false,
       email: "",
@@ -29,5 +29,6 @@ export const signOutAction = () => {
     },
   };
 };
+type SignOutAction = ReturnType<typeof signOutAction>;
 
-export type UserAction = SignInAction;
+export type UserAction = SignInAction | SignOutAction;

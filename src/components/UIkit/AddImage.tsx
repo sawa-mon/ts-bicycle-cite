@@ -3,8 +3,14 @@ import addImage from "../../assets/Images/addImage.svg";
 import styled from "styled-components";
 import { storage } from "../../firebase/index";
 import { ImagePreview } from "./index";
+import { ImageTypes } from "./types";
 
-export const AddImage: React.FC = (props) => {
+type ImageAddProps = {
+  images: ImageTypes;
+  setImages: React.Dispatch<React.SetStateAction<ImageTypes>>;
+};
+
+export const AddImage: React.FC<ImageAddProps> = (props) => {
   const deleteImage = useCallback(
     async (id) => {
       const ret = window.confirm("この画像を削除しますか？");
@@ -16,6 +22,7 @@ export const AddImage: React.FC = (props) => {
         return storage.ref("images").child(id).delete();
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [props.images]
   );
 
@@ -43,6 +50,7 @@ export const AddImage: React.FC = (props) => {
         });
       });
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [props.setImages]
   );
 

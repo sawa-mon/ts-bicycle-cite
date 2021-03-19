@@ -1,13 +1,13 @@
 const initialState = {
-  areapoints: {
-    list: [],
-  },
-
   users: {
-    isSignedIn: false,
+    isSignedIn: true,
     email: "",
     icon: "",
     username: "",
+  },
+
+  areapoints: {
+    list: [],
   },
 };
 

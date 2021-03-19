@@ -1,8 +1,15 @@
 import React from "react";
 import closeMark from "../../assets/Images/closeMark.svg";
 import styled from "styled-components";
+import { ImageTypes } from "./types";
 
-export const ImagePreview = (props) => {
+type PreviewProps = {
+  id:string;
+  path:string;
+  delete:(id: string) => Promise<ImageTypes>;
+}
+
+export const ImagePreview:React.FC<PreviewProps> = (props) => {
   return (
     <StyledMediaThumb>
       <StyledDeleteButton onClick={() => props.delete(props.id)}>

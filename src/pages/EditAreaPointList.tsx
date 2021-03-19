@@ -1,12 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, EditButton, ImageSwiper } from "../components/UIkit";
-import { fetchAreaPoints } from "../reducks/areapoints/operation";
+import { fetchAreaPoints } from "../reducks/areapoints/operations";
 import { getAreaPoints } from "../reducks/areapoints/selector";
 import styled from "styled-components";
 import { makeStyles } from "@material-ui/styles";
+import { Theme } from "@material-ui/core";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme:Theme) => ({
   sliderBox: {
     [theme.breakpoints.down("sm")]: {
       margin: "0 auto",
@@ -23,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const EditAreaPointList = () => {
+export const EditAreaPointList: React.FC = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const selector = useSelector((state) => state);
@@ -92,8 +93,7 @@ export const EditAreaPointList = () => {
             <StyledButton>
               <Button
                 plane
-                label="照合する"
-                type="button"
+                  label="照合する"
                 onClick={() => checkPassWord()}
               />
             </StyledButton>

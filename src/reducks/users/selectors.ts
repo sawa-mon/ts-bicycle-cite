@@ -1,5 +1,5 @@
-import { DefaultRootState } from "react-redux";
 import { createSelector } from "reselect";
+import { DefaultRootState } from "react-redux";
 
 const usersSelector = (state: DefaultRootState) => state.users;
 

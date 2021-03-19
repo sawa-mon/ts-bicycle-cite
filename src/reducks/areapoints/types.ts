@@ -1,15 +1,14 @@
 import { ImageTypes } from "../../components/UIkit/types";
 
 export interface AreapointsDataType {
-  id?: string;
+  id: string;
   info: string;
   images?: ImageTypes;
   installation: string;
-  locationLat: number;
-  locationLng: number;
+  locationLat: string;
+  locationLng: string;
   prefecture: string;
-  timestamp: { seconds: number; nanoseconds: number };
   category: string;
-  username: string;
-  icon: string;
 }
+
+export type AreapointsDataTypes = Array<AreapointsDataType>
