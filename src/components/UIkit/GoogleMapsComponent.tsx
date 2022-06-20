@@ -1,31 +1,38 @@
-import React, { useCallback, useRef } from "react";
-import { GoogleMap, GoogleMapProps } from "@react-google-maps/api";
+import React, { useCallback, useRef, VFC } from "react";
+import { GoogleMap, useLoadScript } from "@react-google-maps/api";
+// import { LoadScriptUrlOptions } from "@react-google-maps/api/dist/utils/make-load-script-url";
 import { PlaceInfo } from "./PlaceInfo";
 
-// interface MapPropsType {
-//   mapContainerStyle: { height: string; width: string };
-//   zoom: number;
-//   lat: number;
-//   lng: number;
-//   info: string;
-//   locationLat: (e: number) => void;
-//   locationLng: (e: number) => void;
-//   onClick: ((e:React.MouseEvent<HTMLElement, MouseEvent>) => void);
-// }
+type Props = {
+  info: string;
+  lat: string;
+  lng: string;
+  zoom?: number;
+  center?: {
+    lat: number;
+    lng: number;
+  };
+  locationLat: string;
+  mapContainerStyle: {
+    height: string;
+    width: string;
+    onClick: ((e: any) => void) | undefined;
+  };
+};
 
-// const libraries = ["places"];
 // デフォルトUI（衛星写真オプション）キャンセル
 const options = {
   disableDefaultUI: true,
   zoomControl: true,
 };
+const libraries = ["places"];
 
-export const GoogleMapsComponent:React.FC<GoogleMapProps> = (props) => {
+export const GoogleMapsComponent: VFC<Props> = (props) => {
   const id = window.location.pathname.split(/&|\//)[1];
-  // const { isLoaded, loadError } = useLoadScript({
-  //   googleMapsApiKey: process.env.REACT_APP_MAP_API_KEY,
-  //   libraries,
-  // });
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: process.env.REACT_APP_MAP_API_KEY,
+    libraries,
+  });
 
   //再レンダー防止措置
   const mapRef = useRef();
@@ -33,8 +40,8 @@ export const GoogleMapsComponent:React.FC<GoogleMapProps> = (props) => {
     mapRef.current = map;
   }, []);
 
-  // if (loadError) return "Error";
-  // if (!isLoaded) return "Loading...";
+  if (loadError) return "Error";
+  if (!isLoaded) return "Loading...";
 
   return (
     <div>

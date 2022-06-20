@@ -1,8 +1,24 @@
 import { InfoWindow, Marker } from "@react-google-maps/api";
-import React, { useState } from "react";
+import React, { useState, VFC } from "react";
 import styled from "styled-components";
 
-export const PlaceInfo = (props) => {
+type Props = {
+  info: string;
+  lat: string;
+  lng: string;
+  location: string;
+};
+
+type SelectState = {
+  info: string;
+  position?: {
+    lat: string;
+    lng: string;
+  };
+};
+
+export const PlaceInfo: VFC<Props> = (props) => {
+  // const {info, lat, lng, location} = props
   const places = [
     {
       info: props.info,
@@ -10,13 +26,14 @@ export const PlaceInfo = (props) => {
     },
   ];
 
-  const [selected, setSelected] = useState(null);
+  const [selected, setSelected] = useState<SelectState>();
 
   return (
     <div>
       {places.map((place) => (
         <Marker
-          key={`${place.location.lat * place.location.lng}`}
+          key={place.info}
+          // key={`${place.location.lat * place.location.lng}`}
           position={{
             lat: place.location.lat,
             lng: place.location.lng,
@@ -34,7 +51,7 @@ export const PlaceInfo = (props) => {
             lng: selected.location.lng,
           }}
           onCloseClick={() => {
-            setSelected(null);
+            setSelected();
           }}
         >
           <StyledInfo>{selected.info}</StyledInfo>
